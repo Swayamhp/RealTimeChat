@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const io = require('socket.io')(server, {
   cors: {
-    origin: "http://127.0.0.1:5500", // Frontend URL
+    origin: "https://realtimechat-web.netlify.app", // Frontend URL
     methods: ["GET", "POST"]
   }
 });
