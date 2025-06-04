@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const io = require('socket.io')(server, {
   cors: {
-    origin: "https://realtimechat-web.netlify.app", // Frontend URL
+    origin: "https://realtimechat-webs.netlify.app", // Frontend URL
     methods: ["GET", "POST"]
   }
 });
@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
     broadcastAllUsers();
   });
 
-  // Join a room
+  // Join a room and make connection
   socket.on('join-room', ({ roomId }) => {
     socket.join(roomId);
     const usersInRoom = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
