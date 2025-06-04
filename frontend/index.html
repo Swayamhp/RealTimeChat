@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat UI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body >
+  <nav class="navbar">
+    <div class="hamburger">&#9776;</div>
+       <div class="logo">Chat UI</div>
+       <div class="modeavatar">
+                <button id="darkModeToggle" class="dark-toggle-btn" title="Toggle Dark Mode">🌙</button>
+        <div id="profile-logo" class="avatar gray"></div>
+</div>
+       
+  </nav>
+  <div class="app">
+    <aside class="sidebar custom-scroll">
+   <div class="chats">
+  <div class="chat-item">
+    <div class="avatar purple">No</div>
+    <div class="chat-info">
+      <div class="chat-name">Emma Thompson</div>
+      <div class="chat-preview">I've sent you the latest project f...</div>
+    </div>
+    <span class="chat-time">12:45 PM</span>
+  </div>
+
+  <div class="chat-item">
+    <div class="avatar blue">MJ</div>
+    <div class="chat-info">
+      <div class="chat-name">Michael Johnson</div>
+      <div class="chat-preview">Are we still meeting for coffee to...</div>
+    </div>
+    <span class="chat-time">Yesterday</span>
+  </div>
+<!-- 
+  <div class="chat-item">
+    <div class="avatar red">SL</div>
+    <div class="chat-info">
+      <div class="chat-name">Sophia Lee</div>
+      <div class="chat-preview">The design team loved your pre...</div>
+    </div>
+    <span class="chat-time">2:13 PM</span>
+  </div>
+
+  <div class="chat-item">
+    <div class="avatar green">JW</div>
+    <div class="chat-info">
+      <div class="chat-name">James Watson</div>
+      <div class="chat-preview">Sending the budget breakdown s...</div>
+    </div>
+    <span class="chat-time">11:27 AM</span>
+  </div>
+
+  <div class="chat-item">
+    <div class="avatar teal">AR</div>
+    <div class="chat-info">
+      <div class="chat-name">Ava Rodriguez</div>
+      <div class="chat-preview">Let’s finalize the designs by to...</div>
+    </div>
+    <span class="chat-time">9:00 AM</span>
+  </div>
+
+  <div class="chat-item">
+    <div class="avatar pink">LW</div>
+    <div class="chat-info">
+      <div class="chat-name">Liam White</div>
+      <div class="chat-preview">Check your inbox. I’ve shared ...</div>
+    </div>
+    <span class="chat-time">Mon</span>
+  </div>
+
+  <div class="chat-item">
+    <div class="avatar orange">NH</div>
+    <div class="chat-info">
+      <div class="chat-name">Nina Harper</div>
+      <div class="chat-preview">Thanks again for the quick turn...</div>
+    </div>
+    <span class="chat-time">Tue</span>
+  </div>
+
+  <div class="chat-item">
+    <div class="avatar yellow">DB</div>
+    <div class="chat-info">
+      <div class="chat-name">Daniel Brown</div>
+      <div class="chat-preview">Got it, will review and update ...</div>
+    </div>
+    <span class="chat-time">10:05 AM</span>
+  </div>
+
+  <div class="chat-item">
+    <div class="avatar cyan">IS</div>
+    <div class="chat-info">
+      <div class="chat-name">Isla Simmons</div>
+      <div class="chat-preview">Can you hop on a quick call?...</div>
+    </div>
+    <span class="chat-time">8:15 AM</span>
+  </div>
+
+  <div class="chat-item">
+    <div class="avatar gray">OB</div>
+    <div class="chat-info">
+      <div class="chat-name">Oscar Bennett</div>
+      <div class="chat-preview">Looking forward to our next me...</div>
+    </div>
+    <span class="chat-time">Fri</span>
+  </div>
+</div> -->
+
+    </aside>
+    <main class="chat-window ">
+      <header class="chat-header ">
+        <div class="avatar">EM</div>
+        <div class="chat-title">
+          <div class="name">Emma Thompson</div>
+          <div class="status ">Online</div>
+        </div>
+      </header>
+      <div class="messages">
+        <!-- <div class="message left">
+          <div class="bubble">Oh, I almost forgot - do you have the latest version of the client presentation? I want to make sure we're all on the same page for tomorrow.</div>
+          <div class="time">12:05 PM</div>
+        </div>
+      <div class="messages">
+        <div class="message right">
+          <div class="bubble">Oh, I almost forgot - do you have the latest version of the client presentation? I want to make sure we're all on the same page for tomorrow.</div>
+          <div class="time">12:05 PM</div>
+        </div>
+         -->
+      </div>
+      <div class="message-input">
+         <div class="message left typing-indicator" id="typingIndicator">
+  <div class="bubble typing">
+    <span></span><span></span><span></span>
+  </div>
+</div>
+<textarea class="input-message" placeholder="Type a message..."></textarea>
+       <button class="send-btn">
+  <i class="fas fa-paper-plane"></i>
+</button>
+
+      </div>   
+    </main>
+    <form type="submit" class="profile-card">
+  <h2>My Profile</h2>
+  <div class="profile">  <div class="profile-circle avatar "></div>
+</div>
+
+  <div class="profile-field">
+    <label for="name">Name</label>
+    <input type="text" id="name" placeholder="John Doe" required >
+  </div>
+
+  <div class="profile-field">
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="johndoe@gmail.com"  required>
+  </div>
+
+  <div class="buttons">
+    <button type="submit" class=" button-save save-btn">Save</button>
+  </div>
+</form>
+  </div>
+
+
+ <footer class="footer">
+  <div class="footer-content">
+    <p>&copy; 2025 Chat UI. All rights reserved.</p>
+    <div class="socials">
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-github"></i></a>
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+    </div>
+  </div>
+</footer>
+<script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+  <!-- Chat Request Modal -->
+<div id="chatRequestModal" class="modal hidden">
+  <div class="modal-content">
+    <p id="chatRequestText"></p>
+    <div class="modal-actions">
+      <button id="acceptChatBtn">Accept</button>
+      <button id="declineChatBtn">Decline</button>
+    </div>
+  </div>
+</div>
+</body>
+<script src="script.js"></script>
+
+</html>
