@@ -1,5 +1,7 @@
 const http = require('http');
 const server = http.createServer();
+require('dotenv').config();
+
 
 const io = require('socket.io')(server, {
   cors: {
@@ -89,8 +91,8 @@ socket.on('chat-request', async ({ name, currentUser }) => {
     }));
   }
 });
-
-server.listen(3000, () => {
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
   console.log("✅ Socket.IO server running at http://localhost:3000");
 });
 
