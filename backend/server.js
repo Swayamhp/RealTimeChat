@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
   // Message sending
   socket.on("input-message", (message, roomId) => {
     console.log(`💬 Message from ${socket.id} to room ${roomId}: ${message}`);
-    socket.to(roomId).emit("recive-message", message);
+    socket.to(roomId).emit("receive-message", message);
   });
 //send-image 
 socket.on("send-image",(selectedImageBuffer,roomId)=>{

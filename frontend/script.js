@@ -176,6 +176,7 @@ socket.on('connect', () => {
 
 socket.on('receive-message', (message) => {
   const receivedMessage = getMessageElement(message, 'left');
+  console.log(message);
   messagesEle.appendChild(receivedMessage);
   scrollToBottom();
   typingDiv.style.display = 'none';
