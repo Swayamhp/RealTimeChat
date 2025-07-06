@@ -6,7 +6,7 @@ require('dotenv').config();
 const io = require('socket.io')(server, {
   cors: {
     // origin:"http://127.0.0.1:5500 ", // Frontend URL
-    origin:"https://realtimechatwebs.netlify.app",
+      origin:"https://realtimechatwebs.netlify.app",
     methods: ["GET", "POST"]
   }
 });
@@ -50,6 +50,18 @@ io.on('connection', (socket) => {
 socket.on("send-image",(selectedImageBuffer,roomId)=>{
   socket.to(roomId).emit("recive-image",selectedImageBuffer);
 })
+  // Listen for image chunks from sender
+    socket.on('image-chunk', ({ chunk, index, total ,roomId}) => {
+        console.log(`📦 Received chunk ${index + 1}/${total} from ${socket.id}`);
+        
+
+        // Forward the chunk to all other clients
+        socket.to(roomId).emit('image-chunk', {
+            chunk,
+            index,
+            total
+        });
+    });
   // Typing indicator
   socket.on("typing", (roomId) => {
     socket.to(roomId).emit("typing");
