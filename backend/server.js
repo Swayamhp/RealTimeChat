@@ -5,7 +5,8 @@ require('dotenv').config();
 
 const io = require('socket.io')(server, {
   cors: {
-    origin: "https://realtimechatwebs.netlify.app", // Frontend URL
+    // origin:"http://127.0.0.1:5500 ", // Frontend URL
+    origin:"https://realtimechatwebs.netlify.app",
     methods: ["GET", "POST"]
   }
 });
@@ -45,7 +46,10 @@ io.on('connection', (socket) => {
     console.log(`💬 Message from ${socket.id} to room ${roomId}: ${message}`);
     socket.to(roomId).emit("recive-message", message);
   });
-
+//send-image 
+socket.on("send-image",(selectedImageBuffer,roomId)=>{
+  socket.to(roomId).emit("recive-image",selectedImageBuffer);
+})
   // Typing indicator
   socket.on("typing", (roomId) => {
     socket.to(roomId).emit("typing");
@@ -93,6 +97,6 @@ socket.on('chat-request', async ({ name, currentUser }) => {
 });
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log("✅ Socket.IO server running at http://localhost:3000");
+  console.log(`✅ Socket.IO server running at http://localhost:${PORT}`);
 });
 

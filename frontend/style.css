@@ -431,6 +431,45 @@ body::-webkit-scrollbar {
   outline: none;
   font-size: 1.15rem;
 }
+.image-upload-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.image-icon-label {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #94a3b8;
+  border-radius: 8px;
+  padding: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.image-icon-label:hover {
+  background-color: #f1f5f9;
+}
+
+.image-preview {
+  max-width: 100px;
+  max-height: 100px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  display: none; /* Hidden by default */
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+
 
 /* Send Button */
 .send-btn {

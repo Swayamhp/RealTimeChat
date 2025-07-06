@@ -120,9 +120,26 @@
          <div class="message left typing-indicator" id="typingIndicator">
   <div class="bubble typing">
     <span></span><span></span><span></span>
+   
   </div>
 </div>
-<textarea class="input-message" placeholder="Type a message..."></textarea>
+   <!-- Image preview area -->
+  <div class="image-preview" id="imagePreview"></div>
+<div class="image-upload-container">
+  <label for="imageInput" class="image-icon-label">
+    <img src="https://img.icons8.com/ios-glyphs/30/image.png" alt="Send image" />
+  </label>
+  <input type="file" id="imageInput" accept="image/*" style="display: none;" />
+
+
+</div>
+  <textarea class="input-message" placeholder="Type a message..."></textarea>
+  
+
+  <!-- Hidden file input -->
+  <input type="file" id="imageInput" accept="image/*" style="display: none;" />
+
+
        <button class="send-btn">
   <i class="fas fa-paper-plane"></i>
 </button>

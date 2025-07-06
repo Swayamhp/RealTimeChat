@@ -1,10 +1,19 @@
 'use strict';
 
 const socket = io('https://realtimechat-cxc7.onrender.com');
+//  const socket = io('http://localhost:5000');
+
 let roomId;
 let currentUser = '';
+    let selectedImageBuffer = null;
+
+
+
+
 
 // DOM elements
+ const imageInput = document.getElementById('imageInput');
+  const imagePreview = document.getElementById('imagePreview');
 const sendBtnEle = document.querySelector('.send-btn');
 const messagesEle = document.querySelector('.messages');
 const inputEle = document.querySelector('.input-message');
@@ -66,6 +75,46 @@ function hashColorClass(name) {
 function createAvatarInitials(name) {
   return name.split(' ').map(p => p[0]).join('').toUpperCase();
 }
+//image show and download option
+function createImageWithDownload(arrayBuffer, messagesEle,messagePos) {
+   
+
+    // Create container div
+    const container = document.createElement('div');
+    container.style.position = "relative";
+    container.style.display = "flex";
+    container.style.margin = "10px";
+    container.classList.add(messagePos);
+
+    // Create <img> element
+    const img = document.createElement('img');
+    img.src = arrayBuffer;
+    img.style.maxWidth = "300px";
+    img.style.borderRadius = "8px";
+    img.style.boxShadow = "0px 4px 8px rgba(0, 0, 0, 0.2)";
+    container.appendChild(img);
+
+    // Create Download button
+    const downloadBtn = document.createElement('a');
+    downloadBtn.href = arrayBuffer;
+    downloadBtn.download = "received-image.jpg"; // Filename for download
+    downloadBtn.textContent = "Download";
+    downloadBtn.style.position = "absolute";
+    downloadBtn.style.top = "8px";
+    downloadBtn.style.right = "8px";
+    downloadBtn.style.backgroundColor = "#4CAF50";
+    downloadBtn.style.color = "white";
+    downloadBtn.style.padding = "5px 8px";
+    downloadBtn.style.borderRadius = "15px";
+    downloadBtn.style.textDecoration = "none";
+    downloadBtn.style.fontSize = "16px";
+    downloadBtn.style.boxShadow = "0px 2px 4px rgba(0,0,0,0.3)";
+    downloadBtn.style.cursor = "pointer";
+    container.appendChild(downloadBtn);
+
+    // Append container to messages element
+    messagesEle.appendChild(container);
+}
 
 // Socket Events
 socket.on("connect", () => {
@@ -78,6 +127,12 @@ socket.on("recive-message", message => {
   scrollToBottom();
   typingDiv.style.display = "none";
 });
+socket.on("recive-image",(arrayBuffer)=>{
+   const blob = new Blob([arrayBuffer]);
+        const imgURL = URL.createObjectURL(blob);
+  createImageWithDownload(arrayBuffer,messagesEle,"right");
+
+})
 
 socket.on("typing", () => {
   showTypingIndicator();
@@ -113,14 +168,24 @@ function updateRoomStatus(isConnected) {
 // Handle Message Send
 function handleSendBtnClick() {
   const text = inputEle.value.trim();
-  if (!text) return;
+  if (!text && !selectedImageBuffer) return;
+  if(selectedImageBuffer){
+    console.log("Emitted");
+    socket.emit("send-image",selectedImageBuffer,roomId);
+        imagePreview.innerHTML='';
+        createImageWithDownload(selectedImageBuffer,messagesEle,"left");
 
-  socket.emit("input-message", text, roomId);
+  }
+  if(text){
+    socket.emit("input-message", text, roomId);
   const userMessage = getMessageElement(text, 'right');
   messagesEle.appendChild(userMessage);
   inputEle.value = '';
   inputEle.style.height = 'auto';
   scrollToBottom();
+
+  }
+  
 }
 
 // Input behavior
@@ -282,3 +347,21 @@ declineBtn.onclick = () => {
 setInterval(() => {
   socket.emit("get-all-users");
 }, 5000);
+
+
+
+//input image ele
+
+  imageInput.addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      selectedImageBuffer =e.target.result; 
+      imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview" />`;
+      imagePreview.style.display = 'block'; // Show preview
+    };
+    
+    reader.readAsDataURL(file);
+  });
