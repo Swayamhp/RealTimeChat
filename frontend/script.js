@@ -6,6 +6,8 @@ const socket = io('https://realtimechat-cxc7.onrender.com');
 let roomId;
 let currentUser = '';
 let selectedImageBuffer = null;
+let selectedFileBuffer = null;
+let selectedFileName = '';
 let receivedChunks = [];
 let totalChunks = 0;
 
@@ -92,6 +94,21 @@ function sendLargeImage(base64String, chunkSize = 64 * 1024, roomId) {
   console.log(`Sent ${totalChunks} chunks.`);
 }
 
+//function send large file
+function sendLargeFile(fileBuffer, chunkSize = 64 * 1024,fileName, roomId) {
+  const totalChunks = Math.ceil(fileBuffer.byteLength / chunkSize);
+
+  for (let i = 0; i < totalChunks; i++) {
+    const start = i * chunkSize;
+    const end = Math.min(start + chunkSize, fileBuffer.byteLength);
+    const chunk = fileBuffer.slice(start, end);
+
+    socket.emit('file-chunk', { chunk, index: i, total: totalChunks, fileName, roomId });
+  }
+
+  console.log(`Sent ${totalChunks} chunks.`);
+}
+
 function showTypingIndicator() {
   typingDiv.style.display = 'block';
   scrollToBottom();
@@ -168,6 +185,36 @@ async function createImageWithDownload(data, messagesEle, messagePos) {
   // Clean up object URL after a delay to ensure rendering
   setTimeout(() => URL.revokeObjectURL(imgURL), 1000);
 }
+//create file elementn with download link
+function createFileWithDownload(fileBuffer, fileName, messagesEle, messagePos) {
+  const container = document.createElement('div');
+  container.style.position = 'relative';
+  container.style.display = 'flex';
+  container.style.margin = '10px';
+  container.classList.add(messagePos);
+
+  const fileLink = document.createElement('a');
+  fileLink.href = URL.createObjectURL(new Blob([fileBuffer]));
+  fileLink.download = fileName || 'downloaded-file';
+  fileLink.textContent = `click to downlod: ${fileName}` || 'Download File';
+  //good styles should look like a file
+  fileLink.style.backgroundColor = '#f0f0f0';
+  fileLink.style.color = '#333';
+  //proper padding and margin
+  fileLink.style.padding = '10px';
+  fileLink.style.maxWidth = '300px';
+  fileLink.style.height = '40px';
+  fileLink.style.borderRadius = '8px';
+  fileLink.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.2)';
+  container.appendChild(fileLink);
+
+console.log('File link created:', container);
+  messagesEle.appendChild(container);
+  scrollToBottom();
+
+  // Clean up object URL after a delay to ensure rendering
+  setTimeout(() => URL.revokeObjectURL(fileLink.href), 1000);
+}
 
 // Socket Events
 socket.on('connect', () => {
@@ -205,6 +252,25 @@ socket.on('image-chunk', async ({ chunk, index, total }) => {
     console.log('Image received and reconstructed.');
   }
 });
+socket.on('file-chunk', ({ chunk, index, total, fileName }) => {
+  receivedChunks[index] = chunk;
+  totalChunks = total;
+  showTypingIndicator();
+  console.log(`Received file chunk ${index + 1} of ${total}`);
+  if (receivedChunks.filter(Boolean).length === totalChunks) {
+    console.log('All file chunks received. Reconstructing file...');
+
+    const blob = new Blob(receivedChunks, { type: 'application/octet-stream' });
+    createFileWithDownload(blob, fileName, messagesEle, 'left');
+    scrollToBottom();
+
+    // Reset chunks for next file
+    receivedChunks = [];
+    totalChunks = 0;
+
+    console.log('File received and reconstructed.');
+  }
+});
 
 socket.on('typing', () => {
   showTypingIndicator();
@@ -240,7 +306,7 @@ function updateRoomStatus(isConnected) {
 // Handle Message Send
 function handleSendBtnClick() {
   const text = inputEle.value.trim();
-  if (!text && !selectedImageBuffer) return;
+  if (!text && !selectedImageBuffer && !selectedFileBuffer) return;
 
   if (selectedImageBuffer) {
     createImageWithDownload(selectedImageBuffer, messagesEle, 'right');
@@ -249,6 +315,13 @@ function handleSendBtnClick() {
     imagePreview.style.display = 'none';
     selectedImageBuffer = null;
     scrollToBottom();
+  }
+  if (selectedFileBuffer) {
+    createFileWithDownload(selectedFileBuffer, selectedFileName, messagesEle, 'right');
+    messagesEle.scrollTop = messagesEle.scrollHeight;
+    sendLargeFile(selectedFileBuffer, 64 * 1024, selectedFileName, roomId);
+    selectedFileBuffer = null;
+    selectedFileName = '';
   }
 
   if (text) {
@@ -420,4 +493,39 @@ imageInput.addEventListener('change', function () {
     imagePreview.style.display = 'block';
   };
   reader.readAsDataURL(file);
+});
+
+// Handle file input for sending files
+const fileInput = document.getElementById('fileInput');
+//open local file dialog
+
+fileInput.addEventListener('change', function () {
+ console.log('File input changed');
+  const file = this.files[0];
+  if (!file) return;  
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const fileBuffer = e.target.result;
+    //add to preview
+    selectedFileBuffer = fileBuffer;
+    selectedFileName = file.name;
+    const filePreview = document.getElementById('filePreview');
+    const fileNameSpan = document.getElementById('fileName');
+    fileNameSpan.textContent = file.name;
+    filePreview.style.display = 'flex'; 
+    filePreview.style.alignItems = 'center';
+    filePreview.style.justifyContent = 'space-between';
+    filePreview.style.margin = '10px 0';
+    filePreview.style.padding = '10px';
+    //remove file button
+    const removeFileBtn = document.getElementById('removeFileBtn');
+    removeFileBtn.onclick = () => {
+      selectedFileBuffer = null;
+      selectedFileName = '';
+      filePreview.style.display = 'none';
+    }
+    socket.emit('send-file', { fileBuffer, fileName: file.name, roomId });
+  };
+  reader.readAsArrayBuffer(file);
 });

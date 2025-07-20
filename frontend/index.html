@@ -129,15 +129,21 @@
   <label for="imageInput" class="image-icon-label">
     <img src="https://img.icons8.com/ios-glyphs/30/image.png" alt="Send image" />
   </label>
+  <label for="fileInput" class="file-icon-label">
+    <img src="https://img.icons8.com/ios-glyphs/30/file.png" alt="Send file" />
+  </label>
   <input type="file" id="imageInput" accept="image/*" style="display: none;" />
-
-
-</div>
+  <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt" style="display: none;" />
+  <div class="file-preview" id="filePreview">
+    <span id="fileName"></span>
+    <button id="removeFileBtn" class="remove-file-btn">Remove</button>
+  </div>
   <textarea class="input-message" placeholder="Type a message..."></textarea>
   
 
   <!-- Hidden file input -->
   <input type="file" id="imageInput" accept="image/*" style="display: none;" />
+  <input tupe="file" id="fileInput" accept=".pdf,.doc,.docx,.txt" style="display: none;" />
 
 
        <button class="send-btn">

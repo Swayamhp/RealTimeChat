@@ -62,10 +62,24 @@ socket.on("send-image",(selectedImageBuffer,roomId)=>{
             total
         });
     });
-  // Typing indicator
-  socket.on("typing", (roomId) => {
-    socket.to(roomId).emit("typing");
+
+
+//listen for file chunks from sender
+socket.on('file-chunk', ({ chunk, index, total, fileName, roomId }) => {
+  console.log(`📦 Received file chunk ${index + 1}/${total} for ${fileName} from ${socket.id}`);
+  // Forward the chunk to all other clients
+  socket.to(roomId).emit('file-chunk', {
+    chunk,
+    index,
+    total,
+    fileName
   });
+});
+
+// Typing indicator
+socket.on("typing", (roomId) => {
+  socket.to(roomId).emit("typing");
+});
 
   // Return all users to the requesting client
   socket.on("get-all-users", async () => {
@@ -111,4 +125,6 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`✅ Socket.IO server running at http://localhost:${PORT}`);
 });
+
+
 

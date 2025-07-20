@@ -909,3 +909,15 @@ input:disabled {
   display: none;
 }
 
+/* File Input */
+.file-icon-label {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #94a3b8;
+  border-radius: 8px;
+  padding: 6px;
+  transition: background-color 0.2s ease;
+}
+
