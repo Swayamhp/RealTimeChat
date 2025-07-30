@@ -399,9 +399,12 @@ body::-webkit-scrollbar {
 /* Message Input */
 .message-input {
   margin-top: 12px;
+  margin-bottom: 12px;;
+  padding: 0 24px 16px 24px;
   display: flex;
   justify-content: center;
-  padding: 0 140px 24px 140px;
+  /* padding: 0 140px 24px 140px; */
+  width:auto;
   gap: 14px;
   background-color: #ffffff;
   border-top: 1.5px solid #cbd5e1;
@@ -569,10 +572,10 @@ body::-webkit-scrollbar {
     width:auto;
   }
 
-  .send-btn {
+  /* .send-btn {
     width: 100%;
     margin-top: 10px;
-  }
+  } */
 }
 
 
@@ -920,4 +923,14 @@ input:disabled {
   padding: 6px;
   transition: background-color 0.2s ease;
 }
+
+.input-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.input_btn{
+  display: flex;
+}
+
 

@@ -124,6 +124,7 @@
   </div>
 </div>
    <!-- Image preview area -->
+    <div class="input-container">
   <div class="image-preview" id="imagePreview"></div>
 <div class="image-upload-container">
   <label for="imageInput" class="image-icon-label">
@@ -138,19 +139,21 @@
     <span id="fileName"></span>
     <button id="removeFileBtn" class="remove-file-btn">Remove</button>
   </div>
-  <textarea class="input-message" placeholder="Type a message..."></textarea>
+  </div>
+  <div class="input_btn">
+    <textarea class="input-message" placeholder="Type a message..."></textarea>
+    <button class="send-btn">
+  <i class="fas fa-paper-plane"></i>
+</button>
+  </div>
   
+  </div>
 
   <!-- Hidden file input -->
   <input type="file" id="imageInput" accept="image/*" style="display: none;" />
   <input tupe="file" id="fileInput" accept=".pdf,.doc,.docx,.txt" style="display: none;" />
+</div>
 
-
-       <button class="send-btn">
-  <i class="fas fa-paper-plane"></i>
-</button>
-
-      </div>   
     </main>
     <form type="submit" class="profile-card">
   <h2>My Profile</h2>

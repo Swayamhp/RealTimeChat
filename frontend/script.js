@@ -1,8 +1,8 @@
 'use strict';
 
 // Connect to Socket.IO server
-// const socket = io('http://localhost:5000');
-const socket = io('https://realtimechat-cxc7.onrender.com');
+const socket = io('http://localhost:5000');
+// const socket = io('https://realtimechat-cxc7.onrender.com');
 let roomId;
 let currentUser = '';
 let selectedImageBuffer = null;
